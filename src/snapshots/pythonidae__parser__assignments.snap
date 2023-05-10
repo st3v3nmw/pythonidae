@@ -1,0 +1,44 @@
+---
+source: src/parser.rs
+expression: "grammar::ProgramParser::new().parse(r#\"\n            foo=2 * 4 - 3\n            bar = (2-4) /3\n        \"#)"
+---
+Ok(
+    [
+        Assignment(
+            "foo",
+            Op(
+                Op(
+                    Number(
+                        2,
+                    ),
+                    Mul,
+                    Number(
+                        4,
+                    ),
+                ),
+                Sub,
+                Number(
+                    3,
+                ),
+            ),
+        ),
+        Assignment(
+            "bar",
+            Op(
+                Op(
+                    Number(
+                        2,
+                    ),
+                    Sub,
+                    Number(
+                        4,
+                    ),
+                ),
+                Div,
+                Number(
+                    3,
+                ),
+            ),
+        ),
+    ],
+)

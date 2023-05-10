@@ -1,0 +1,14 @@
+---
+source: src/parser.rs
+expression: "grammar::ProgramParser::new().parse(\"((42)\")"
+---
+Err(
+    UnrecognizedEof {
+        location: 5,
+        expected: [
+            "\")\"",
+            "\"+\"",
+            "\"-\"",
+        ],
+    },
+)

@@ -1,0 +1,25 @@
+---
+source: src/parser.rs
+expression: "grammar::ProgramParser::new().parse(\"(2-4) /3\")"
+---
+Ok(
+    [
+        RawExpr(
+            Op(
+                Op(
+                    Number(
+                        2,
+                    ),
+                    Sub,
+                    Number(
+                        4,
+                    ),
+                ),
+                Div,
+                Number(
+                    3,
+                ),
+            ),
+        ),
+    ],
+)
