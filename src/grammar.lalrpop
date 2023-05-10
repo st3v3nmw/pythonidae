@@ -1,0 +1,59 @@
+use std::str::FromStr;
+use crate::ast::{Expr, OpCode, Stmt};
+
+// See the full grammar specification here:
+// https://docs.python.org/3/reference/grammar.html
+
+grammar;
+
+pub Program: Vec<Box<Stmt>> = {
+    CompoundStmt+,
+    SimpleStmt+,
+};
+
+SimpleStmt: Box<Stmt> = {
+    Expr => Box::new(Stmt::RawExpr(<>)),
+    Assignment,
+}
+
+CompoundStmt: Box<Stmt> = {
+    // IfStmt,
+}
+
+Assignment: Box<Stmt> = {
+    <v:Variable> "=" <e:Expr> => Box::new(Stmt::Assignment(v, e)),
+}
+
+Expr: Box<Expr> = {
+    Expr ExprOp Factor => Box::new(Expr::Op(<>)),
+    Factor,
+};
+
+ExprOp: OpCode = {
+    "+" => OpCode::Add,
+    "-" => OpCode::Sub,
+};
+
+Factor: Box<Expr> = {
+    Factor FactorOp Term => Box::new(Expr::Op(<>)),
+    Term,
+};
+
+FactorOp: OpCode = {
+    "*" => OpCode::Mul,
+    "/" => OpCode::Div,
+};
+
+Term: Box<Expr> = {
+    Num => Box::new(Expr::Number(<>)),
+    Variable => Box::new(Expr::Variable(<>)),
+    "(" <Expr> ")"
+};
+
+Variable: String = {
+    r"[_a-zA-Z][_0-9a-zA-Z]*" => <>.to_string(),
+};
+
+Num: i32 = {
+    r"[0-9]+" => i32::from_str(<>).unwrap()
+};

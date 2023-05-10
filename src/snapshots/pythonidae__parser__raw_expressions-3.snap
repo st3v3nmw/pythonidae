@@ -1,0 +1,13 @@
+---
+source: src/parser.rs
+expression: "grammar::ProgramParser::new().parse(\"((((42))))\")"
+---
+Ok(
+    [
+        RawExpr(
+            Number(
+                42,
+            ),
+        ),
+    ],
+)
